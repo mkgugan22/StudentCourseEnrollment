@@ -1,0 +1,561 @@
+<div class="courses-container">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4" data-aos="fade-down">
+    <div>
+      <h2 class="fw-bold text-primary">
+        <i class="fas fa-book-open me-2"></i>
+        My College Courses
+      </h2>
+      <p class="text-muted mb-0">Create, manage, and submit courses for principal approval</p>
+    </div>
+    <button class="btn btn-primary" (click)="toggleAddForm()">
+      <i class="fas fa-plus me-2"></i>
+      Create New Course
+    </button>
+  </div>
+
+  <!-- Add Course Form -->
+  <div *ngIf="showAddForm" class="card mb-4 border-0 shadow-sm" data-aos="slide-down" data-aos-duration="600">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">
+        <i class="fas fa-plus-circle me-2"></i>
+        Add New Course
+      </h5>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="addCourse()">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label fw-semibold">Course Title *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="newCourse.title" 
+              name="title"
+              placeholder="Enter course title"
+              required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label fw-semibold">Course Code *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="newCourse.code" 
+              name="code"
+              placeholder="e.g., CS301"
+              required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label fw-semibold">Credits</label>
+            <select class="form-select" [(ngModel)]="newCourse.credits" name="credits">
+              <option value="1">1 Credit</option>
+              <option value="2">2 Credits</option>
+              <option value="3">3 Credits</option>
+              <option value="4">4 Credits</option>
+              <option value="5">5 Credits</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <label class="form-label fw-semibold">Department</label>
+            <select class="form-select" [(ngModel)]="newCourse.department" name="department">
+              <option value="Computer Science">Computer Science</option>
+              <option value="Information Technology">Information Technology</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Mechanical">Mechanical</option>
+              <option value="Civil">Civil</option>
+            </select>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label class="form-label fw-semibold">Semester</label>
+            <select class="form-select" [(ngModel)]="newCourse.semester" name="semester">
+              <option value="Spring 2024">Spring 2024</option>
+              <option value="Fall 2024">Fall 2024</option>
+              <option value="Summer 2024">Summer 2024</option>
+            </select>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label class="form-label fw-semibold">Duration</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="newCourse.duration" 
+              name="duration"
+              placeholder="e.g., 16 weeks">
+          </div>
+          <div class="col-md-3 mb-3">
+            <label class="form-label fw-semibold">Level</label>
+            <select class="form-select" [(ngModel)]="newCourse.level" name="level">
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-semibold">Description *</label>
+            <textarea 
+              class="form-control" 
+              rows="4" 
+              [(ngModel)]="newCourse.description" 
+              name="description"
+              placeholder="Enter course description and objectives"
+              required></textarea>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-semibold">Prerequisites</label>
+            <textarea 
+              class="form-control" 
+              rows="4" 
+              [(ngModel)]="newCourse.prerequisites" 
+              name="prerequisites"
+              placeholder="List course prerequisites (optional)"></textarea>
+          </div>
+        </div>
+        
+        <!-- File Upload Section -->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-semibold">Upload PDF Materials</label>
+            <input 
+              type="file" 
+              class="form-control" 
+              multiple
+              accept=".pdf"
+              (change)="onPdfFileSelect($event)">
+            <small class="text-muted">Upload PDF files (Max 10MB each)</small>
+            
+            <!-- Display selected PDF files -->
+            <div *ngIf="selectedPdfFiles.length > 0" class="mt-2">
+              <div *ngFor="let file of selectedPdfFiles; let i = index" class="d-flex justify-content-between align-items-center border p-2 mb-1 rounded">
+                <span class="small">
+                  <i class="fas fa-file-pdf text-danger me-1"></i>
+                  {{file.name}} ({{getFileSize(file.size)}})
+                </span>
+                <button type="button" class="btn btn-sm btn-outline-danger" (click)="removePdfFile(i)">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-semibold">Upload Video Materials</label>
+            <input 
+              type="file" 
+              class="form-control" 
+              multiple
+              accept="video/*"
+              (change)="onVideoFileSelect($event)">
+            <small class="text-muted">Upload video files (Max 100MB each)</small>
+            
+            <!-- Display selected video files -->
+            <div *ngIf="selectedVideoFiles.length > 0" class="mt-2">
+              <div *ngFor="let file of selectedVideoFiles; let i = index" class="d-flex justify-content-between align-items-center border p-2 mb-1 rounded">
+                <span class="small">
+                  <i class="fas fa-file-video text-primary me-1"></i>
+                  {{file.name}} ({{getFileSize(file.size)}})
+                </span>
+                <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeVideoFile(i)">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Upload Progress -->
+        <div *ngIf="isUploading" class="mb-3">
+          <label class="form-label fw-semibold">Upload Progress</label>
+          <div class="progress">
+            <div class="progress-bar" [style.width.%]="uploadProgress">{{uploadProgress}}%</div>
+          </div>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-primary" [disabled]="!newCourse.title || !newCourse.description || !newCourse.code || isUploading">
+            <i class="fas fa-paper-plane me-2"></i>
+            Submit Course for Approval
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="cancelAdd()">
+            <i class="fas fa-times me-2"></i>
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Course Form -->
+  <div *ngIf="editingCourse" class="card mb-4 border-0 shadow-lg" data-aos="slide-down" data-aos-duration="600">
+    <div class="card-header bg-warning text-dark">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+          <i class="fas fa-edit me-2"></i>
+          Edit Course: {{editingCourse.title}}
+        </h5>
+        <span class="badge bg-dark">{{editingCourse.code}}</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="updateCourse()" #editForm="ngForm">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label fw-semibold">Course Title *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="editingCourse.title" 
+              name="editTitle"
+              placeholder="Enter course title"
+              required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label fw-semibold">Course Code *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="editingCourse.code" 
+              name="editCode"
+              placeholder="e.g., CS301"
+              required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label fw-semibold">Credits</label>
+            <select class="form-select" [(ngModel)]="editingCourse.credits" name="editCredits">
+              <option value="1">1 Credit</option>
+              <option value="2">2 Credits</option>
+              <option value="3">3 Credits</option>
+              <option value="4">4 Credits</option>
+              <option value="5">5 Credits</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <label class="form-label fw-semibold">Department</label>
+            <select class="form-select" [(ngModel)]="editingCourse.department" name="editDepartment">
+              <option value="Computer Science">Computer Science</option>
+              <option value="Information Technology">Information Technology</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Mechanical">Mechanical</option>
+              <option value="Civil">Civil</option>
+            </select>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label class="form-label fw-semibold">Semester</label>
+            <select class="form-select" [(ngModel)]="editingCourse.semester" name="editSemester">
+              <option value="Spring 2024">Spring 2024</option>
+              <option value="Fall 2024">Fall 2024</option>
+              <option value="Summer 2024">Summer 2024</option>
+              <option value="Spring 2025">Spring 2025</option>
+              <option value="Fall 2025">Fall 2025</option>
+            </select>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label class="form-label fw-semibold">Duration</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="editingCourse.duration" 
+              name="editDuration"
+              placeholder="e.g., 16 weeks">
+          </div>
+          <div class="col-md-3 mb-3">
+            <label class="form-label fw-semibold">Level</label>
+            <select class="form-select" [(ngModel)]="editingCourse.level" name="editLevel">
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-semibold">Description *</label>
+            <textarea 
+              class="form-control" 
+              rows="4" 
+              [(ngModel)]="editingCourse.description" 
+              name="editDescription"
+              placeholder="Enter course description and objectives"
+              required></textarea>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-semibold">Prerequisites</label>
+            <textarea 
+              class="form-control" 
+              rows="4" 
+              [(ngModel)]="editingCourse.prerequisites" 
+              name="editPrerequisites"
+              placeholder="List course prerequisites (optional)"></textarea>
+          </div>
+        </div>
+        
+        <!-- Current Course Materials Display -->
+        <div class="row mb-3" *ngIf="editingCourse.materials">
+          <div class="col-12">
+            <h6 class="fw-semibold text-info">
+              <i class="fas fa-folder-open me-2"></i>
+              Current Course Materials
+            </h6>
+            <div class="row">
+              <div class="col-md-6" *ngIf="editingCourse.materials.pdfs?.length > 0">
+                <div class="card border-info">
+                  <div class="card-header bg-light">
+                    <small class="fw-semibold text-info">
+                      <i class="fas fa-file-pdf me-1"></i>
+                      PDF Materials ({{editingCourse.materials.pdfs.length}})
+                    </small>
+                  </div>
+                  <div class="card-body p-2">
+                    <div *ngFor="let pdf of editingCourse.materials.pdfs" class="d-flex justify-content-between align-items-center border-bottom py-1">
+                      <small class="text-truncate">
+                        <i class="fas fa-file-pdf text-danger me-1"></i>
+                        {{pdf}}
+                      </small>
+                      <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeMaterial('pdf', pdf)">
+                        <i class="fas fa-times"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6" *ngIf="editingCourse.materials.videos?.length > 0">
+                <div class="card border-primary">
+                  <div class="card-header bg-light">
+                    <small class="fw-semibold text-primary">
+                      <i class="fas fa-file-video me-1"></i>
+                      Video Materials ({{editingCourse.materials.videos.length}})
+                    </small>
+                  </div>
+                  <div class="card-body p-2">
+                    <div *ngFor="let video of editingCourse.materials.videos" class="d-flex justify-content-between align-items-center border-bottom py-1">
+                      <small class="text-truncate">
+                        <i class="fas fa-file-video text-primary me-1"></i>
+                        {{video}}
+                      </small>
+                      <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeMaterial('video', video)">
+                        <i class="fas fa-times"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="d-flex gap-2 justify-content-between">
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-warning" [disabled]="!editForm.valid">
+              <i class="fas fa-save me-2"></i>
+              Update Course
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
+              <i class="fas fa-times me-2"></i>
+              Cancel
+            </button>
+          </div>
+          <div>
+            <span class="badge bg-info">Last Updated: {{getFormattedDate(editingCourse.updatedAt)}}</span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Courses Grid -->
+  <div class="row">
+    <div *ngFor="let course of courses; let i = index" class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100 border-0 shadow-sm course-card" 
+           data-aos="zoom-in" 
+           [attr.data-aos-delay]="i * 100"
+           [attr.data-status]="course.approvalStatus.toLowerCase()">
+        <div class="card-header bg-white border-0 pb-0">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <span class="badge" [class]="getLevelBadgeClass(course.level)">{{course.level}}</span>
+              <span class="ms-2" [class]="getApprovalStatusClass(course.approvalStatus)">{{course.approvalStatus}}</span>
+            </div>
+            <div class="d-flex gap-1 align-items-center">
+              <!-- Quick Edit/Delete Buttons -->
+              <button *ngIf="canEditCourse(course)" 
+                      class="btn btn-sm btn-warning" 
+                      (click)="editCourse(course)"
+                      title="Edit Course">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button *ngIf="canDeleteCourse(course)" 
+                      class="btn btn-sm btn-outline-danger" 
+                      (click)="confirmDeleteCourse(course)"
+                      title="Delete Course">
+                <i class="fas fa-trash"></i>
+              </button>
+              <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" [attr.aria-expanded]="false">
+                  <i class="fas fa-ellipsis-v"></i>
+                </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow">
+                <li><h6 class="dropdown-header">
+                  <i class="fas fa-cog me-2"></i>Course Actions
+                </h6></li>
+                <li><hr class="dropdown-divider"></li>
+                <li *ngIf="canEditCourse(course)">
+                  <a class="dropdown-item" href="#" (click)="editCourse(course); $event.preventDefault()">
+                    <i class="fas fa-edit me-2 text-warning"></i>Edit Course
+                  </a>
+                </li>
+                <li *ngIf="!canEditCourse(course)">
+                  <span class="dropdown-item-text text-muted">
+                    <i class="fas fa-lock me-2"></i>Cannot edit approved course
+                  </span>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#" (click)="duplicateCourse(course); $event.preventDefault()">
+                    <i class="fas fa-copy me-2 text-info"></i>Duplicate Course
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <a class="dropdown-item text-danger" href="#" (click)="confirmDeleteCourse(course); $event.preventDefault()">
+                    <i class="fas fa-trash me-2"></i>Delete Course
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title fw-bold text-primary">{{course.title}}</h5>
+          <p class="small text-muted mb-2">
+            <i class="fas fa-code me-1"></i>{{course.code}} | 
+            <i class="fas fa-building me-1"></i>{{course.department}} | 
+            <i class="fas fa-calendar me-1"></i>{{course.semester}}
+          </p>
+          <p class="card-text text-muted">{{course.description}}</p>
+          
+          <div class="course-stats mb-3">
+            <div class="row text-center">
+              <div class="col-4">
+                <div class="stat-item">
+                  <i class="fas fa-users text-success"></i>
+                  <div class="fw-bold">{{course.students}}</div>
+                  <small class="text-muted">Students</small>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="stat-item">
+                  <i class="fas fa-star text-warning"></i>
+                  <div class="fw-bold">{{course.rating}}</div>
+                  <small class="text-muted">Rating</small>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="stat-item">
+                  <i class="fas fa-award text-info"></i>
+                  <div class="fw-bold">{{course.credits}}</div>
+                  <small class="text-muted">Credits</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Course Materials -->
+          <div class="materials-section mb-3" *ngIf="course.materials">
+            <h6 class="fw-semibold mb-2">Course Materials:</h6>
+            <div class="row">
+              <div class="col-6" *ngIf="course.materials.pdfs?.length > 0">
+                <small class="text-muted d-block mb-1">PDF Materials ({{course.materials.pdfs.length}})</small>
+                <div class="material-list">
+                  <div *ngFor="let pdf of course.materials.pdfs.slice(0, 2)" class="material-item">
+                    <i class="fas fa-file-pdf text-danger me-1"></i>
+                    <small>{{pdf}}</small>
+                  </div>
+                  <small *ngIf="course.materials.pdfs.length > 2" class="text-muted">+{{course.materials.pdfs.length - 2}} more</small>
+                </div>
+              </div>
+              <div class="col-6" *ngIf="course.materials.videos?.length > 0">
+                <small class="text-muted d-block mb-1">Video Materials ({{course.materials.videos.length}})</small>
+                <div class="material-list">
+                  <div *ngFor="let video of course.materials.videos.slice(0, 2)" class="material-item">
+                    <i class="fas fa-file-video text-primary me-1"></i>
+                    <small>{{video}}</small>
+                  </div>
+                  <small *ngIf="course.materials.videos.length > 2" class="text-muted">+{{course.materials.videos.length - 2}} more</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="d-flex justify-content-between align-items-center">
+            <small class="text-muted">
+              <i class="fas fa-clock me-1"></i>
+              {{course.duration}} | 
+              <i class="fas fa-list me-1"></i>
+              {{course.prerequisites || 'No prerequisites'}}
+            </small>
+            <button class="btn btn-sm btn-outline-primary" (click)="viewCourseDetails(course)">
+              <i class="fas fa-eye me-1"></i>
+              View Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Summary Section -->
+  <div *ngIf="courses.length > 0" class="row mt-4">
+    <div class="col-12">
+      <div class="card border-0 shadow-sm" data-aos="fade-up" data-aos-delay="300">
+        <div class="card-header bg-white border-0">
+          <h5 class="mb-0 fw-semibold">
+            <i class="fas fa-chart-pie text-info me-2"></i>
+            Course Summary & Ratings
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row text-center">
+            <div class="col-md-3">
+              <div class="summary-stat" data-aos="flip-up" data-aos-delay="400">
+                <h3 class="fw-bold text-primary">{{courses.length}}</h3>
+                <p class="text-muted mb-0">Total Courses</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="summary-stat" data-aos="flip-up" data-aos-delay="500">
+                <h3 class="fw-bold text-success">{{getTotalStudents()}}</h3>
+                <p class="text-muted mb-0">Total Students</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="summary-stat" data-aos="flip-up" data-aos-delay="600">
+                <h3 class="fw-bold text-warning">{{getOverallRating()}}</h3>
+                <p class="text-muted mb-0">Average Rating</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="summary-stat" data-aos="flip-up" data-aos-delay="700">
+                <h3 class="fw-bold text-info">{{getApprovedCoursesCount()}}</h3>
+                <p class="text-muted mb-0">Approved Courses</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Empty State -->
+  <div *ngIf="courses.length === 0" class="text-center py-5" data-aos="fade-up" data-aos-delay="200">
+    <i class="fas fa-university fa-3x text-muted mb-3"></i>
+    <h4 class="text-muted">No courses created yet</h4>
+    <p class="text-muted">Create your first college course and submit it for principal approval!</p>
+    <button class="btn btn-primary" (click)="toggleAddForm()">
+      <i class="fas fa-plus me-2"></i>
+      Create Your First Course
+    </button>
+  </div>
+</div>

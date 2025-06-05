@@ -1,0 +1,161 @@
+<div class="progress-container">
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="page-header">
+        <h2 class="fw-bold text-primary">
+          <i class="fas fa-chart-bar me-2"></i>
+          College Course Analytics
+        </h2>
+        <p class="text-muted mb-0">Analyze student enrollment patterns, performance metrics, and course ratings</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Academic Summary Cards -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-center border-0 shadow-sm summary-card">
+        <div class="card-body">
+          <i class="fas fa-star fa-2x text-warning mb-2"></i>
+          <h3 class="fw-bold text-warning">4.7</h3>
+          <p class="text-muted mb-0">Average Course Rating</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center border-0 shadow-sm summary-card">
+        <div class="card-body">
+          <i class="fas fa-user-graduate fa-2x text-success mb-2"></i>
+          <h3 class="fw-bold text-success">245</h3>
+          <p class="text-muted mb-0">Total Enrolled Students</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center border-0 shadow-sm summary-card">
+        <div class="card-body">
+          <i class="fas fa-trophy fa-2x text-primary mb-2"></i>
+          <h3 class="fw-bold text-primary">89%</h3>
+          <p class="text-muted mb-0">Course Completion Rate</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center border-0 shadow-sm summary-card">
+        <div class="card-body">
+          <i class="fas fa-chart-line fa-2x text-info mb-2"></i>
+          <h3 class="fw-bold text-info">95%</h3>
+          <p class="text-muted mb-0">Student Satisfaction</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Analytics Charts Section -->
+  <div class="row mb-4">
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-sm chart-card">
+        <div class="card-header bg-white border-0">
+          <h5 class="mb-0 fw-semibold">
+            <i class="fas fa-users text-primary me-2"></i>
+            Most Enrolled Courses by Students
+          </h5>
+          <small class="text-muted">Shows which courses have the highest student enrollment</small>
+        </div>
+        <div class="card-body">
+          <div class="chart-container">
+            <echarts [options]="mostEnrolledCoursesOptions" class="w-100 h-100"></echarts>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-sm chart-card">
+        <div class="card-header bg-white border-0">
+          <h5 class="mb-0 fw-semibold">
+            <i class="fas fa-medal text-success me-2"></i>
+            Student Performance Distribution
+          </h5>
+          <small class="text-muted">Performance breakdown of students across courses</small>
+        </div>
+        <div class="card-body">
+          <div class="chart-container">
+            <echarts [options]="topPerformingStudentsOptions" class="w-100 h-100"></echarts>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Rating Analysis -->
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-0">
+          <h5 class="mb-0 fw-semibold">
+            <i class="fas fa-star text-warning me-2"></i>
+            High Rating Courses Analysis
+          </h5>
+          <small class="text-muted">Distribution of course ratings provided by this teacher</small>
+        </div>
+        <div class="card-body">
+          <div class="chart-container">
+            <echarts [options]="highRatingCoursesOptions" class="w-100 h-100"></echarts>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Course Performance Insights -->
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-0">
+          <h5 class="mb-0 fw-semibold">
+            <i class="fas fa-lightbulb text-info me-2"></i>
+            Performance Insights
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="insights-list">
+            <div class="insight-item mb-4">
+              <div class="d-flex align-items-center mb-2">
+                <i class="fas fa-arrow-up text-success me-2"></i>
+                <h6 class="mb-0">Top Performing Course</h6>
+              </div>
+              <p class="text-muted mb-1">Machine Learning Basics has the highest student satisfaction (4.9/5.0)</p>
+              <small class="text-success">35% of students scored excellent</small>
+            </div>
+            
+            <div class="insight-item mb-4">
+              <div class="d-flex align-items-center mb-2">
+                <i class="fas fa-users text-primary me-2"></i>
+                <h6 class="mb-0">Most Popular Course</h6>
+              </div>
+              <p class="text-muted mb-1">Data Structures has the highest enrollment (52 students)</p>
+              <small class="text-primary">20% increase from last semester</small>
+            </div>
+            
+            <div class="insight-item mb-4">
+              <div class="d-flex align-items-center mb-2">
+                <i class="fas fa-chart-line text-warning me-2"></i>
+                <h6 class="mb-0">Improvement Area</h6>
+              </div>
+              <p class="text-muted mb-1">Computer Networks could benefit from additional support materials</p>
+              <small class="text-warning">Consider adding more practical examples</small>
+            </div>
+            
+            <div class="insight-item">
+              <div class="d-flex align-items-center mb-2">
+                <i class="fas fa-trophy text-info me-2"></i>
+                <h6 class="mb-0">Overall Performance</h6>
+              </div>
+              <p class="text-muted mb-1">All courses maintain above 4.0 rating with excellent completion rates</p>
+              <small class="text-info">Keep up the great work!</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

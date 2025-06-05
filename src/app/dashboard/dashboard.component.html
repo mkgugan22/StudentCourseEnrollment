@@ -1,0 +1,179 @@
+<!-- College Teacher Dashboard Header -->
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="welcome-card p-4 text-center bg-primary text-white rounded shadow" data-aos="fade-down">
+      <h1 class="display-5 fw-bold mb-3">
+        <i class="fas fa-university me-3"></i>
+        Welcome to College Teacher Portal!
+      </h1>
+      <p class="lead mb-0">
+        Manage your college courses, track student enrollments, and monitor academic performance across departments.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- College Statistics Cards -->
+<div class="row mb-4">
+  <div class="col-md-3">
+    <div class="card text-center border-0 shadow-sm stats-card" data-aos="zoom-in" data-aos-delay="100">
+      <div class="card-body">
+        <i class="fas fa-book-open fa-2x text-primary mb-2"></i>
+        <h3 class="fw-bold text-primary">{{stats.totalCourses}}</h3>
+        <p class="text-muted mb-0">My Courses</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-center border-0 shadow-sm stats-card" data-aos="zoom-in" data-aos-delay="200">
+      <div class="card-body">
+        <i class="fas fa-user-graduate fa-2x text-success mb-2"></i>
+        <h3 class="fw-bold text-success">{{stats.totalStudents}}</h3>
+        <p class="text-muted mb-0">Enrolled Students</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-center border-0 shadow-sm stats-card" data-aos="zoom-in" data-aos-delay="300">
+      <div class="card-body">
+        <i class="fas fa-hourglass-half fa-2x text-warning mb-2"></i>
+        <h3 class="fw-bold text-warning">{{stats.pendingApprovals}}</h3>
+        <p class="text-muted mb-0">Pending Approvals</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-center border-0 shadow-sm stats-card" data-aos="zoom-in" data-aos-delay="400">
+      <div class="card-body">
+        <i class="fas fa-calendar-alt fa-2x text-info mb-2"></i>
+        <h3 class="fw-bold text-info">{{stats.activeSemesters}}</h3>
+        <p class="text-muted mb-0">Active Semesters</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Academic Analytics Charts -->
+<div class="row mb-4">
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm chart-card" data-aos="slide-up" data-aos-delay="500">
+      <div class="card-header bg-white border-0">
+        <h5 class="mb-0 fw-semibold">
+          <i class="fas fa-chart-bar text-primary me-2"></i>
+          Enrollment Trends
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="chart-container">
+          <echarts [options]="enrollmentChartOptions" 
+                   [initOpts]="{renderer: 'canvas', width: 'auto', height: 'auto'}"
+                   class="w-100 h-100"></echarts>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm chart-card" data-aos="slide-up" data-aos-delay="600">
+      <div class="card-header bg-white border-0">
+        <h5 class="mb-0 fw-semibold">
+          <i class="fas fa-chart-pie text-success me-2"></i>
+          Department Distribution
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="chart-container">
+          <echarts [options]="departmentChartOptions" 
+                   [initOpts]="{renderer: 'canvas', width: 'auto', height: 'auto'}"
+                   class="w-100 h-100"></echarts>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm chart-card" data-aos="slide-up" data-aos-delay="700">
+      <div class="card-header bg-white border-0">
+        <h5 class="mb-0 fw-semibold">
+          <i class="fas fa-chart-line text-warning me-2"></i>
+          Semester Performance
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="chart-container">
+          <echarts [options]="semesterChartOptions" 
+                   [initOpts]="{renderer: 'canvas', width: 'auto', height: 'auto'}"
+                   class="w-100 h-100"></echarts>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- My Courses Overview and Recent Activities -->
+<div class="row">
+  <!-- Course Overview -->
+  <div class="col-md-8">
+    <div class="card border-0 shadow-sm" data-aos="fade-right" data-aos-delay="800">
+      <div class="card-header bg-white border-0">
+        <h5 class="mb-0 fw-semibold">
+          <i class="fas fa-book-open text-primary me-2"></i>
+          My Courses Overview
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div *ngFor="let course of myCourses; let i = index" class="col-md-6 mb-3">
+            <div class="card border-start border-primary border-3 h-100" 
+                 data-aos="flip-left" 
+                 [attr.data-aos-delay]="900 + (i * 100)">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <h6 class="fw-bold mb-0">{{course.title}}</h6>
+                  <span [class]="getStatusClass(course.status)">{{course.status}}</span>
+                </div>
+                <p class="small text-muted mb-2">
+                  <i class="fas fa-code me-1"></i>{{course.code}} | {{course.semester}}
+                </p>
+                <div class="d-flex justify-content-between text-sm">
+                  <span class="text-muted">
+                    <i class="fas fa-users me-1"></i>{{course.students}} students
+                  </span>
+                  <span class="text-warning">
+                    <i class="fas fa-star me-1"></i>{{course.rating}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Recent Activities -->
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm" data-aos="fade-left" data-aos-delay="800">
+      <div class="card-header bg-white border-0">
+        <h5 class="mb-0 fw-semibold">
+          <i class="fas fa-clock text-info me-2"></i>
+          Recent Activities
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="activity-list">
+          <div *ngFor="let activity of recentActivities; let i = index" 
+               class="activity-item d-flex mb-3" 
+               data-aos="slide-left" 
+               [attr.data-aos-delay]="900 + (i * 100)">
+            <div class="activity-icon me-2">
+              <i [class]="getActivityIcon(activity.type)"></i>
+            </div>
+            <div class="activity-content flex-grow-1">
+              <p class="mb-1 small">{{ activity.message }}</p>
+              <small class="text-muted">{{ activity.time }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
