@@ -462,28 +462,64 @@
             </div>
           </div>
           
-          <!-- Course Materials -->
-          <div class="materials-section mb-3" *ngIf="course.materials">
-            <h6 class="fw-semibold mb-2">Course Materials:</h6>
+          <!-- Course Modules Preview -->
+          <div class="modules-section mb-3" *ngIf="course.modules && course.modules.length > 0">
+            <h6 class="fw-semibold mb-2">
+              <i class="fas fa-layer-group me-1 text-info"></i>
+              Course Modules ({{getModulesCount(course)}})
+            </h6>
             <div class="row">
-              <div class="col-6" *ngIf="course.materials.pdfs?.length > 0">
-                <small class="text-muted d-block mb-1">PDF Materials ({{course.materials.pdfs.length}})</small>
-                <div class="material-list">
-                  <div *ngFor="let pdf of course.materials.pdfs.slice(0, 2)" class="material-item">
-                    <i class="fas fa-file-pdf text-danger me-1"></i>
-                    <small>{{pdf}}</small>
+              <div class="col-12">
+                <div class="modules-preview">
+                  <div *ngFor="let module of course.modules.slice(0, 2)" class="module-preview-item border-start border-info border-3 ps-2 mb-2">
+                    <div class="d-flex justify-content-between align-items-start">
+                      <div>
+                        <small class="fw-semibold text-dark d-block">{{module.order}}. {{module.title}}</small>
+                        <small class="text-muted">{{module.description.substring(0, 50)}}{{module.description.length > 50 ? '...' : ''}}</small>
+                        <div class="mt-1">
+                          <small class="text-info me-2">
+                            <i class="fas fa-file-pdf text-danger"></i> {{module.pdfs?.length || 0}} PDFs
+                          </small>
+                          <small class="text-info">
+                            <i class="fas fa-video text-primary"></i> {{module.videos?.length || 0}} Videos
+                          </small>
+                        </div>
+                      </div>
+                      <span class="badge bg-light text-dark small">{{module.duration}}</span>
+                    </div>
                   </div>
-                  <small *ngIf="course.materials.pdfs.length > 2" class="text-muted">+{{course.materials.pdfs.length - 2}} more</small>
+                  <small *ngIf="course.modules.length > 2" class="text-muted">
+                    <i class="fas fa-plus-circle me-1"></i>+{{course.modules.length - 2}} more modules
+                  </small>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Course Progress Bar -->
+            <div class="mt-2">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <small class="text-muted">Course Progress</small>
+                <small class="text-muted">{{getCompletedModulesCount(course)}} / {{getModulesCount(course)}} modules</small>
+              </div>
+              <div class="progress" style="height: 4px;">
+                <div class="progress-bar bg-info" [style.width.%]="getCourseProgress(course)"></div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Course Materials Overview -->
+          <div class="materials-overview mb-3" *ngIf="course.materials">
+            <div class="row text-center">
+              <div class="col-6" *ngIf="course.materials.pdfs?.length > 0">
+                <div class="material-stat">
+                  <i class="fas fa-file-pdf text-danger"></i>
+                  <small class="d-block text-muted">{{course.materials.pdfs.length}} PDFs</small>
                 </div>
               </div>
               <div class="col-6" *ngIf="course.materials.videos?.length > 0">
-                <small class="text-muted d-block mb-1">Video Materials ({{course.materials.videos.length}})</small>
-                <div class="material-list">
-                  <div *ngFor="let video of course.materials.videos.slice(0, 2)" class="material-item">
-                    <i class="fas fa-file-video text-primary me-1"></i>
-                    <small>{{video}}</small>
-                  </div>
-                  <small *ngIf="course.materials.videos.length > 2" class="text-muted">+{{course.materials.videos.length - 2}} more</small>
+                <div class="material-stat">
+                  <i class="fas fa-video text-primary"></i>
+                  <small class="d-block text-muted">{{course.materials.videos.length}} Videos</small>
                 </div>
               </div>
             </div>
@@ -496,10 +532,16 @@
               <i class="fas fa-list me-1"></i>
               {{course.prerequisites || 'No prerequisites'}}
             </small>
-            <button class="btn btn-sm btn-outline-primary" (click)="viewCourseDetails(course)">
-              <i class="fas fa-eye me-1"></i>
-              View Details
-            </button>
+            <div class="btn-group" role="group">
+              <button class="btn btn-sm btn-outline-primary" (click)="viewCourseDetails(course)">
+                <i class="fas fa-info-circle me-1"></i>
+                Details
+              </button>
+              <button class="btn btn-sm btn-primary" (click)="viewCourseModules(course)" *ngIf="course.modules && course.modules.length > 0">
+                <i class="fas fa-layer-group me-1"></i>
+                Modules
+              </button>
+            </div>
           </div>
         </div>
       </div>

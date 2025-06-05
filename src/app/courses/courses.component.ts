@@ -40,11 +40,26 @@ export class CoursesComponent implements OnInit, AfterViewInit {
     level: 'Beginner',             // Difficulty level
     prerequisites: '',             // Prerequisites for the course
     approvalStatus: 'Pending',     // New courses default to pending status
+    modules: [],                   // Course modules
     materials: {                   // Course materials
       pdfs: [],                    // PDF files
       videos: []                   // Video files
     }
   };
+  
+  // Module management
+  newModule = {
+    title: '',
+    description: '',
+    duration: '',
+    order: 1,
+    pdfs: [],
+    videos: [],
+    isCompleted: false
+  };
+  showModuleForm = false;
+  editingModule: any = null;
+  editingModuleIndex = -1;
   editingCourse: any = null;        // Course currently being edited
   showAddForm = false;               // Show/hide add course form
   
@@ -72,6 +87,38 @@ export class CoursesComponent implements OnInit, AfterViewInit {
       rating: 4.8,
       status: 'Active',
       approvalStatus: 'Approved',
+      modules: [
+        {
+          id: '1',
+          title: 'Introduction to Data Structures',
+          description: 'Basic concepts and overview of data structures',
+          duration: '2 weeks',
+          order: 1,
+          pdfs: ['intro-data-structures.pdf', 'basic-concepts.pdf'],
+          videos: ['ds-overview.mp4'],
+          isCompleted: false
+        },
+        {
+          id: '2',
+          title: 'Arrays and Linked Lists',
+          description: 'Understanding arrays, linked lists and their operations',
+          duration: '3 weeks',
+          order: 2,
+          pdfs: ['arrays-guide.pdf', 'linked-lists.pdf'],
+          videos: ['arrays-tutorial.mp4', 'linked-lists-demo.mp4'],
+          isCompleted: false
+        },
+        {
+          id: '3',
+          title: 'Algorithm Analysis',
+          description: 'Time and space complexity analysis',
+          duration: '2 weeks',
+          order: 3,
+          pdfs: ['complexity-analysis.pdf'],
+          videos: ['big-o-notation.mp4'],
+          isCompleted: false
+        }
+      ],
       materials: {
         pdfs: ['data-structures-notes.pdf', 'algorithms-handbook.pdf'],
         videos: ['intro-to-algorithms.mp4', 'sorting-algorithms.mp4']
@@ -92,6 +139,38 @@ export class CoursesComponent implements OnInit, AfterViewInit {
       rating: 4.2,
       status: 'Active',
       approvalStatus: 'Approved',
+      modules: [
+        {
+          id: '1',
+          title: 'HTML Fundamentals',
+          description: 'Learn HTML structure, tags, and semantic markup',
+          duration: '1 week',
+          order: 1,
+          pdfs: ['html-basics.pdf', 'semantic-html.pdf'],
+          videos: ['html-intro.mp4'],
+          isCompleted: false
+        },
+        {
+          id: '2',
+          title: 'CSS Styling',
+          description: 'CSS properties, selectors, and responsive design',
+          duration: '2 weeks',
+          order: 2,
+          pdfs: ['css-guide.pdf', 'responsive-design.pdf'],
+          videos: ['css-basics.mp4', 'flexbox-grid.mp4'],
+          isCompleted: false
+        },
+        {
+          id: '3',
+          title: 'JavaScript Programming',
+          description: 'JavaScript fundamentals and DOM manipulation',
+          duration: '3 weeks',
+          order: 3,
+          pdfs: ['javascript-basics.pdf', 'dom-manipulation.pdf'],
+          videos: ['js-fundamentals.mp4', 'dom-tutorial.mp4'],
+          isCompleted: false
+        }
+      ],
       materials: {
         pdfs: ['html-css-guide.pdf', 'javascript-basics.pdf'],
         videos: ['web-dev-intro.mp4', 'responsive-design.mp4']
@@ -112,6 +191,28 @@ export class CoursesComponent implements OnInit, AfterViewInit {
       rating: 4.9,
       status: 'Completed',
       approvalStatus: 'Approved',
+      modules: [
+        {
+          id: '1',
+          title: 'ML Introduction',
+          description: 'Overview of machine learning concepts and applications',
+          duration: '1 week',
+          order: 1,
+          pdfs: ['ml-overview.pdf'],
+          videos: ['ml-intro.mp4'],
+          isCompleted: false
+        },
+        {
+          id: '2',
+          title: 'Supervised Learning',
+          description: 'Classification and regression algorithms',
+          duration: '3 weeks',
+          order: 2,
+          pdfs: ['supervised-learning.pdf', 'algorithms-guide.pdf'],
+          videos: ['classification.mp4', 'regression.mp4'],
+          isCompleted: false
+        }
+      ],
       materials: {
         pdfs: ['ml-fundamentals.pdf', 'python-for-ml.pdf'],
         videos: ['ml-introduction.mp4', 'supervised-learning.mp4']
@@ -252,6 +353,28 @@ export class CoursesComponent implements OnInit, AfterViewInit {
       rating: 0,
       status: 'Draft',
       approvalStatus: 'Pending',
+      modules: [
+        {
+          id: '1',
+          title: 'Advanced Python Concepts',
+          description: 'Decorators, generators, and metaclasses',
+          duration: '2 weeks',
+          order: 1,
+          pdfs: ['decorators-guide.pdf', 'generators.pdf'],
+          videos: ['decorators-explained.mp4', 'generators-tutorial.mp4'],
+          isCompleted: false
+        },
+        {
+          id: '2',
+          title: 'Asynchronous Programming',
+          description: 'Async/await, coroutines, and concurrent programming',
+          duration: '2 weeks',
+          order: 2,
+          pdfs: ['async-programming.pdf', 'concurrency.pdf'],
+          videos: ['async-await.mp4', 'concurrency-demo.mp4'],
+          isCompleted: false
+        }
+      ],
       materials: {
         pdfs: ['advanced-python.pdf', 'async-programming.pdf'],
         videos: ['decorators-explained.mp4', 'generators-tutorial.mp4']
@@ -272,6 +395,28 @@ export class CoursesComponent implements OnInit, AfterViewInit {
       rating: 0,
       status: 'Draft',
       approvalStatus: 'Rejected',
+      modules: [
+        {
+          id: '1',
+          title: 'Cloud Computing Basics',
+          description: 'Introduction to cloud computing concepts',
+          duration: '1 week',
+          order: 1,
+          pdfs: ['cloud-fundamentals.pdf'],
+          videos: ['cloud-intro.mp4'],
+          isCompleted: false
+        },
+        {
+          id: '2',
+          title: 'AWS Services',
+          description: 'Overview of Amazon Web Services',
+          duration: '2 weeks',
+          order: 2,
+          pdfs: ['aws-services.pdf'],
+          videos: ['aws-introduction.mp4'],
+          isCompleted: false
+        }
+      ],
       materials: {
         pdfs: ['cloud-fundamentals.pdf'],
         videos: ['aws-introduction.mp4']
@@ -292,6 +437,38 @@ export class CoursesComponent implements OnInit, AfterViewInit {
       rating: 0,
       status: 'Draft',
       approvalStatus: 'Pending',
+      modules: [
+        {
+          id: '1',
+          title: 'Mobile Development Fundamentals',
+          description: 'Introduction to mobile app development concepts',
+          duration: '1 week',
+          order: 1,
+          pdfs: ['mobile-basics.pdf'],
+          videos: ['mobile-dev-intro.mp4'],
+          isCompleted: false
+        },
+        {
+          id: '2',
+          title: 'React Native Development',
+          description: 'Building apps with React Native framework',
+          duration: '3 weeks',
+          order: 2,
+          pdfs: ['react-native-guide.pdf', 'rn-components.pdf'],
+          videos: ['react-native-intro.mp4', 'rn-navigation.mp4'],
+          isCompleted: false
+        },
+        {
+          id: '3',
+          title: 'Flutter Development',
+          description: 'Creating cross-platform apps with Flutter',
+          duration: '3 weeks',
+          order: 3,
+          pdfs: ['flutter-basics.pdf', 'dart-language.pdf'],
+          videos: ['flutter-intro.mp4', 'dart-tutorial.mp4'],
+          isCompleted: false
+        }
+      ],
       materials: {
         pdfs: ['react-native-guide.pdf', 'flutter-basics.pdf'],
         videos: ['mobile-dev-intro.mp4', 'cross-platform-development.mp4']
@@ -446,6 +623,7 @@ export class CoursesComponent implements OnInit, AfterViewInit {
       level: 'Beginner',
       prerequisites: '',
       approvalStatus: 'Pending',
+      modules: [],
       materials: {
         pdfs: [],
         videos: []
@@ -1030,6 +1208,212 @@ ${course.prerequisites || 'None'}
       editTooltip: this.canEditCourse(course) ? 'Edit this course' : 'Cannot edit approved course with students',
       deleteTooltip: (course.approvalStatus !== 'Approved' || course.students === 0) ? 'Delete this course' : 'Cannot delete approved course with students'
     };
+  }
+
+  // Module Management Functions
+  
+  /**
+   * Add new module to course
+   */
+  addModule() {
+    if (this.newModule.title && this.newModule.description) {
+      const module = {
+        ...this.newModule,
+        id: Date.now().toString(),
+        pdfs: this.selectedPdfFiles.map(file => file.name),
+        videos: this.selectedVideoFiles.map(file => file.name)
+      };
+      
+      if (this.editingCourse) {
+        if (!this.editingCourse.modules) {
+          this.editingCourse.modules = [];
+        }
+        this.editingCourse.modules.push(module);
+        this.editingCourse.modules.sort((a: any, b: any) => a.order - b.order);
+      } else {
+        if (!this.newCourse.modules) {
+          this.newCourse.modules = [];
+        }
+        this.newCourse.modules.push(module);
+        this.newCourse.modules.sort((a: any, b: any) => a.order - b.order);
+      }
+      
+      this.resetModuleForm();
+      alert(`✅ Module Added Successfully!\n\nTitle: ${module.title}\nOrder: ${module.order}`);
+    } else {
+      alert('❌ Please fill in all required module fields (Title, Description)');
+    }
+  }
+  
+  /**
+   * Edit existing module
+   */
+  editModule(moduleIndex: number, isEditing = false) {
+    const modules = isEditing ? this.editingCourse?.modules : this.newCourse.modules;
+    if (modules && modules[moduleIndex]) {
+      this.editingModule = { ...modules[moduleIndex] };
+      this.editingModuleIndex = moduleIndex;
+      this.showModuleForm = true;
+      
+      // Populate form with module data
+      this.newModule = { ...this.editingModule };
+    }
+  }
+  
+  /**
+   * Update existing module
+   */
+  updateModule() {
+    if (this.newModule.title && this.newModule.description && this.editingModuleIndex >= 0) {
+      const updatedModule = {
+        ...this.newModule,
+        id: this.editingModule.id,
+        pdfs: [...(this.editingModule.pdfs || []), ...this.selectedPdfFiles.map(file => file.name)],
+        videos: [...(this.editingModule.videos || []), ...this.selectedVideoFiles.map(file => file.name)]
+      };
+      
+      if (this.editingCourse && this.editingCourse.modules) {
+        this.editingCourse.modules[this.editingModuleIndex] = updatedModule;
+        this.editingCourse.modules.sort((a: any, b: any) => a.order - b.order);
+      } else if (this.newCourse.modules) {
+        this.newCourse.modules[this.editingModuleIndex] = updatedModule;
+        this.newCourse.modules.sort((a: any, b: any) => a.order - b.order);
+      }
+      
+      this.resetModuleForm();
+      alert(`✅ Module Updated Successfully!\n\nTitle: ${updatedModule.title}\nOrder: ${updatedModule.order}`);
+    } else {
+      alert('❌ Please fill in all required module fields');
+    }
+  }
+  
+  /**
+   * Delete module
+   */
+  deleteModule(moduleIndex: number, isEditing = false) {
+    const modules = isEditing ? this.editingCourse?.modules : this.newCourse.modules;
+    if (modules && modules[moduleIndex]) {
+      const moduleTitle = modules[moduleIndex].title;
+      if (confirm(`⚠️ DELETE MODULE CONFIRMATION\n\nModule: ${moduleTitle}\n\nThis action cannot be undone. Are you sure?`)) {
+        modules.splice(moduleIndex, 1);
+        alert(`🗑️ Module Deleted Successfully!\n\nDeleted: ${moduleTitle}`);
+      }
+    }
+  }
+  
+  /**
+   * Reset module form
+   */
+  resetModuleForm() {
+    this.newModule = {
+      title: '',
+      description: '',
+      duration: '',
+      order: this.getNextModuleOrder(),
+      pdfs: [],
+      videos: [],
+      isCompleted: false
+    };
+    this.editingModule = null;
+    this.editingModuleIndex = -1;
+    this.showModuleForm = false;
+    this.selectedPdfFiles = [];
+    this.selectedVideoFiles = [];
+  }
+  
+  /**
+   * Get next module order number
+   */
+  getNextModuleOrder(): number {
+    const modules = this.editingCourse ? this.editingCourse.modules : this.newCourse.modules;
+    if (!modules || modules.length === 0) {
+      return 1;
+    }
+    return Math.max(...modules.map((m: any) => m.order)) + 1;
+  }
+  
+  /**
+   * Toggle module form visibility
+   */
+  toggleModuleForm() {
+    this.showModuleForm = !this.showModuleForm;
+    if (this.showModuleForm) {
+      this.resetModuleForm();
+    }
+  }
+  
+  /**
+   * Remove PDF from module
+   */
+  removeModulePdf(module: any, pdfIndex: number) {
+    if (module.pdfs && module.pdfs[pdfIndex]) {
+      const pdfName = module.pdfs[pdfIndex];
+      module.pdfs.splice(pdfIndex, 1);
+      console.log(`PDF removed from module: ${pdfName}`);
+    }
+  }
+  
+  /**
+   * Remove video from module
+   */
+  removeModuleVideo(module: any, videoIndex: number) {
+    if (module.videos && module.videos[videoIndex]) {
+      const videoName = module.videos[videoIndex];
+      module.videos.splice(videoIndex, 1);
+      console.log(`Video removed from module: ${videoName}`);
+    }
+  }
+  
+  /**
+   * Get total modules count
+   */
+  getModulesCount(course: any): number {
+    return course.modules ? course.modules.length : 0;
+  }
+  
+  /**
+   * Get completed modules count
+   */
+  getCompletedModulesCount(course: any): number {
+    if (!course.modules) return 0;
+    return course.modules.filter((module: any) => module.isCompleted).length;
+  }
+  
+  /**
+   * Calculate course progress percentage
+   */
+  getCourseProgress(course: any): number {
+    const total = this.getModulesCount(course);
+    const completed = this.getCompletedModulesCount(course);
+    return total > 0 ? Math.round((completed / total) * 100) : 0;
+  }
+  
+  /**
+   * Navigate to detailed course view with modules
+   */
+  viewCourseModules(course: any): void {
+    // Navigate to course detail component with modules view
+    this.router.navigate(['/course-detail', course.id], { 
+      state: { course: course }
+    });
+  }
+  
+  /**
+   * View PDF content (placeholder for actual PDF viewer)
+   */
+  viewPdfContent(pdfName: string): void {
+    // TODO: Implement actual PDF viewer
+    alert(`📄 PDF Viewer\n\nOpening: ${pdfName}\n\nThis will open the PDF in a viewer component.`);
+    console.log('Opening PDF:', pdfName);
+  }
+  
+  /**
+   * View video content (placeholder for actual video player)
+   */
+  viewVideoContent(videoName: string): void {
+    // TODO: Implement actual video player
+    alert(`🎥 Video Player\n\nPlaying: ${videoName}\n\nThis will open the video in a player component.`);
+    console.log('Playing video:', videoName);
   }
 }
 
