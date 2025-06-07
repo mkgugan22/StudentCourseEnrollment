@@ -1,0 +1,289 @@
+/* You can add global styles to this file, and also import other style files */
+/* Bootstrap theme with enhanced styling */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+/* AOS Animation Library */
+@import 'aos/dist/aos.css';
+
+/* Global color variables for consistency */
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
+  --info-color: #17a2b8;
+  --light-color: #f8f9fa;
+  --dark-color: #343a40;
+  --border-radius: 8px;
+  --box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  --transition: all 0.3s ease;
+}
+
+/* Body and global styling */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f6fa;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Enhanced card styling */
+.card {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  transition: var(--transition);
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
+}
+
+/* Button enhancements */
+.btn {
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  padding: 8px 16px;
+  transition: var(--transition);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Form controls */
+.form-control, .form-select {
+  border-radius: var(--border-radius);
+  border: 1px solid #ddd;
+  transition: var(--transition);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Navigation enhancements */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  backdrop-filter: blur(10px);
+}
+
+/* Stats card hover effects */
+.stats-card {
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Course management specific styles */
+.course-card {
+  transition: var(--transition);
+  overflow: hidden;
+}
+
+.course-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+/* Material UI Dialog Overrides */
+.course-details-dialog-panel {
+  border-radius: 16px !important;
+  overflow: hidden;
+}
+
+.course-details-dialog-panel .mat-mdc-dialog-container {
+  border-radius: 16px !important;
+  background: white;
+  box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14) !important;
+}
+
+/* AOS Animation Enhancements */
+[data-aos] {
+  transition-timing-function: ease-in-out;
+}
+
+/* Custom Material UI Theme Colors */
+.mat-mdc-raised-button.mat-primary {
+  --mdc-protected-button-container-color: #007bff;
+  --mdc-protected-button-label-text-color: white;
+}
+
+.mat-mdc-raised-button.mat-accent {
+  --mdc-protected-button-container-color: #28a745;
+  --mdc-protected-button-label-text-color: white;
+}
+
+.mat-mdc-raised-button.mat-warn {
+  --mdc-protected-button-container-color: #dc3545;
+  --mdc-protected-button-label-text-color: white;
+}
+
+/* Custom dialog overlay */
+.cdk-overlay-backdrop {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+/* Loading animation for course details */
+.course-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.course-loading .spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #007bff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive design improvements */
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 1rem;
+  }
+  
+  .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .stats-card h3 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Animation utilities */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Chart container styling */
+.chart-container {
+  position: relative;
+  min-height: 300px;
+  width: 100%;
+}
+
+/* Activity list styling */
+.activity-item {
+  transition: var(--transition);
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+}
+
+.activity-item:hover {
+  background-color: var(--light-color);
+  transform: translateX(5px);
+}
+
+/* Welcome card enhancements */
+.welcome-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+/* Badge styling */
+.badge {
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+/* Table enhancements */
+.table {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.table thead th {
+  background-color: var(--light-color);
+  border: none;
+  font-weight: 600;
+  color: var(--dark-color);
+}
+
+/* Progress bar styling */
+.progress {
+  border-radius: 10px;
+  height: 10px;
+  background-color: #e9ecef;
+}
+
+.progress-bar {
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+  transition: width 0.3s ease;
+}
+
+/* Success, warning, and error states */
+.success-glow {
+  box-shadow: 0 0 20px rgba(40, 167, 69, 0.3);
+}
+
+.warning-glow {
+  box-shadow: 0 0 20px rgba(255, 193, 7, 0.3);
+}
+
+.error-glow {
+  box-shadow: 0 0 20px rgba(220, 53, 69, 0.3);
+}

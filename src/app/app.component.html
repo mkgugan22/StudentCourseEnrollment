@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold text-primary" routerLink="/dashboard">
+      <i class="fas fa-university me-2"></i>College Portal - Teacher Dashboard
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" routerLink="/dashboard" routerLinkActive="active">
+            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" routerLink="/courses" routerLinkActive="active">
+            <i class="fas fa-book-open me-1"></i>My Courses
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" routerLink="/progress" routerLinkActive="active">
+            <i class="fas fa-chart-bar me-1"></i>Analytics
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" routerLink="/status" routerLinkActive="active">
+            <i class="fas fa-list-check me-1"></i>Approval Status
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content Area -->
+<div class="container-fluid mt-4">
+  <router-outlet></router-outlet>
+</div>

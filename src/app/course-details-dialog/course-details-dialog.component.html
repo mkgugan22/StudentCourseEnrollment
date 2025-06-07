@@ -1,0 +1,245 @@
+<div class="course-details-dialog" data-aos="zoom-in">
+  <!-- Dialog Header -->
+  <div class="dialog-header" mat-dialog-title data-aos="fade-down" data-aos-delay="100">
+    <div class="header-content">
+      <div class="course-icon">
+        <mat-icon>school</mat-icon>
+      </div>
+      <div class="header-text">
+        <h2 class="course-title">{{ course.title }}</h2>
+        <p class="course-code">{{ course.code }} | {{ course.department }}</p>
+      </div>
+      <div class="header-actions">
+        <mat-chip-set>
+          <mat-chip [style.background-color]="getStatusColor(course.approvalStatus)" class="status-chip">
+            <mat-icon matChipAvatar>{{ course.approvalStatus === 'Approved' ? 'check_circle' : course.approvalStatus === 'Pending' ? 'schedule' : 'cancel' }}</mat-icon>
+            {{ course.approvalStatus }}
+          </mat-chip>
+        </mat-chip-set>
+        <button mat-icon-button (click)="onClose()" class="close-btn">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dialog Content -->
+  <mat-dialog-content class="dialog-content">
+    <mat-tab-group mat-stretch-tabs animationDuration="300ms" data-aos="fade-up" data-aos-delay="200">
+      
+      <!-- Overview Tab -->
+      <mat-tab label="Overview">
+        <div class="tab-content">
+          <!-- Course Stats -->
+          <div class="stats-grid" data-aos="fade-up" data-aos-delay="300">
+            <mat-card class="stat-card" data-aos="flip-left" data-aos-delay="400">
+              <mat-card-content>
+                <div class="stat-icon students">
+                  <mat-icon>people</mat-icon>
+                </div>
+                <div class="stat-value">{{ course.students }}</div>
+                <div class="stat-label">Students</div>
+              </mat-card-content>
+            </mat-card>
+            
+            <mat-card class="stat-card" data-aos="flip-left" data-aos-delay="500">
+              <mat-card-content>
+                <div class="stat-icon rating">
+                  <mat-icon>star</mat-icon>
+                </div>
+                <div class="stat-value">{{ course.rating }}</div>
+                <div class="stat-label">Rating</div>
+              </mat-card-content>
+            </mat-card>
+            
+            <mat-card class="stat-card" data-aos="flip-left" data-aos-delay="600">
+              <mat-card-content>
+                <div class="stat-icon credits">
+                  <mat-icon>school</mat-icon>
+                </div>
+                <div class="stat-value">{{ course.credits }}</div>
+                <div class="stat-label">Credits</div>
+              </mat-card-content>
+            </mat-card>
+            
+            <mat-card class="stat-card" data-aos="flip-left" data-aos-delay="700">
+              <mat-card-content>
+                <div class="stat-icon duration">
+                  <mat-icon>schedule</mat-icon>
+                </div>
+                <div class="stat-value">{{ course.duration }}</div>
+                <div class="stat-label">Duration</div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <!-- Course Info -->
+          <mat-card class="info-card" data-aos="fade-up" data-aos-delay="800">
+            <mat-card-header>
+              <mat-card-title>
+                <mat-icon>info</mat-icon>
+                Course Information
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="info-grid">
+                <div class="info-item">
+                  <strong>Description:</strong>
+                  <p>{{ course.description }}</p>
+                </div>
+                <div class="info-item">
+                  <strong>Semester:</strong>
+                  <span>{{ course.semester }}</span>
+                </div>
+                <div class="info-item">
+                  <strong>Level:</strong>
+                  <mat-chip [color]="getLevelColor(course.level)" selected>{{ course.level }}</mat-chip>
+                </div>
+                <div class="info-item" *ngIf="course.prerequisites">
+                  <strong>Prerequisites:</strong>
+                  <p>{{ course.prerequisites }}</p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-tab>
+
+      <!-- Materials Tab -->
+      <mat-tab label="Materials">
+        <div class="tab-content">
+          <div *ngIf="course.materials" data-aos="fade-up" data-aos-delay="300">
+            
+            <!-- PDF Materials -->
+            <mat-card class="materials-card" *ngIf="course.materials.pdfs?.length > 0" data-aos="slide-right" data-aos-delay="400">
+              <mat-card-header>
+                <mat-card-title>
+                  <mat-icon class="pdf-icon">picture_as_pdf</mat-icon>
+                  PDF Materials ({{ course.materials.pdfs.length }})
+                </mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="materials-list">
+                  <div *ngFor="let pdf of course.materials.pdfs; let i = index" 
+                       class="material-item" 
+                       data-aos="fade-in" 
+                       [attr.data-aos-delay]="500 + (i * 100)">
+                    <div class="material-info">
+                      <mat-icon class="material-icon pdf">description</mat-icon>
+                      <span class="material-name">{{ pdf }}</span>
+                    </div>
+                    <button mat-icon-button color="primary" (click)="downloadMaterial(pdf, 'PDF')">
+                      <mat-icon>download</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+            <!-- Video Materials -->
+            <mat-card class="materials-card" *ngIf="course.materials.videos?.length > 0" data-aos="slide-left" data-aos-delay="600">
+              <mat-card-header>
+                <mat-card-title>
+                  <mat-icon class="video-icon">video_library</mat-icon>
+                  Video Materials ({{ course.materials.videos.length }})
+                </mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="materials-list">
+                  <div *ngFor="let video of course.materials.videos; let i = index" 
+                       class="material-item" 
+                       data-aos="fade-in" 
+                       [attr.data-aos-delay]="700 + (i * 100)">
+                    <div class="material-info">
+                      <mat-icon class="material-icon video">play_circle_filled</mat-icon>
+                      <span class="material-name">{{ video }}</span>
+                    </div>
+                    <button mat-icon-button color="primary" (click)="downloadMaterial(video, 'Video')">
+                      <mat-icon>download</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+            <!-- No Materials Message -->
+            <div *ngIf="(!course.materials.pdfs || course.materials.pdfs.length === 0) && 
+                        (!course.materials.videos || course.materials.videos.length === 0)" 
+                 class="no-materials" data-aos="fade-up" data-aos-delay="300">
+              <mat-icon>folder_open</mat-icon>
+              <p>No materials uploaded yet</p>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Analytics Tab -->
+      <mat-tab label="Analytics">
+        <div class="tab-content">
+          <div class="analytics-grid" data-aos="fade-up" data-aos-delay="300">
+            <mat-card class="analytics-card" data-aos="zoom-in" data-aos-delay="400">
+              <mat-card-header>
+                <mat-card-title>
+                  <mat-icon>trending_up</mat-icon>
+                  Performance Metrics
+                </mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="metric-item">
+                  <span class="metric-label">Completion Rate:</span>
+                  <span class="metric-value success">{{ ((course.students - 5) / course.students * 100).toFixed(1) }}%</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-label">Average Score:</span>
+                  <span class="metric-value primary">{{ (course.rating * 18.5).toFixed(1) }}%</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-label">Engagement Level:</span>
+                  <span class="metric-value warning">{{ course.rating > 4.5 ? 'High' : course.rating > 4.0 ? 'Medium' : 'Low' }}</span>
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+            <mat-card class="analytics-card" data-aos="zoom-in" data-aos-delay="500">
+              <mat-card-header>
+                <mat-card-title>
+                  <mat-icon>feedback</mat-icon>
+                  Student Feedback
+                </mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="feedback-summary">
+                  <div class="rating-display">
+                    <span class="rating-value">{{ course.rating }}</span>
+                    <div class="stars">
+                      <mat-icon *ngFor="let star of [1,2,3,4,5]" 
+                               [class.filled]="star <= course.rating">star</mat-icon>
+                    </div>
+                  </div>
+                  <p class="feedback-text">Based on {{ course.students }} student reviews</p>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-dialog-content>
+
+  <!-- Dialog Actions -->
+  <mat-dialog-actions class="dialog-actions" data-aos="fade-up" data-aos-delay="900">
+    <button mat-button (click)="onClose()" class="secondary-btn">
+      <mat-icon>close</mat-icon>
+      Close
+    </button>
+    <button mat-raised-button color="accent" (click)="editCourse()" *ngIf="course.approvalStatus !== 'Approved'">
+      <mat-icon>edit</mat-icon>
+      Edit Course
+    </button>
+    <button mat-raised-button color="primary" (click)="enrollInCourse()">
+      <mat-icon>person_add</mat-icon>
+      View Details
+    </button>
+  </mat-dialog-actions>
+</div>
+
